@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void update(Long id, CategoryDTO dto) {
-        Category category = this.repository.findById(id).orElseThrow(() -> new NotFoundException("Entity not found."));
+        Category category = this.find(id);
         category.setName(dto.getName());
         this.repository.save(category);
     }
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO findById(Long id) {
-        Category category = this.repository.findById(id).orElseThrow(() -> new NotFoundException("Entity not found."));
+        Category category = this.find(id);
         return new CategoryDTO(category);
     }
 
@@ -51,6 +51,11 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
         Page<Category> list = repository.findAll(pageRequest);
         return list.map(CategoryDTO::new);
+    }
+
+    @Override
+    public Category find(Long id) {
+        return this.repository.findById(id).orElseThrow(() -> new NotFoundException("Entity not found."));
     }
 
 }

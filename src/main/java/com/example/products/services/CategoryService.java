@@ -10,7 +10,8 @@ import java.util.List;
 public interface CategoryService {
     CategoryDTO create(CategoryDTO dto);
     void update(Long id, CategoryDTO dto);
-    public void delete(Long id);
+    void delete(Long id);
     CategoryDTO findById(Long id);
     Page<CategoryDTO> findAllPaged(PageRequest pageRequest);
+    Category find(Long id);
 }

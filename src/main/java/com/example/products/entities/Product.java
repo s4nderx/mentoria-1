@@ -24,8 +24,13 @@ public class Product implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
-    @ManyToMany(mappedBy = "products")
-    private final Set<Category> categories = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "tb_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 
     public Product(Long id, String name, BigDecimal price, Instant createdAt) {
         this.id = id;
