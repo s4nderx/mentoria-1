@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             this.repository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possivel excluir uma categoria que possui produtos");
+            throw new DataIntegrityException("It is not possible to delete a category that has products");
         }
     }
 
