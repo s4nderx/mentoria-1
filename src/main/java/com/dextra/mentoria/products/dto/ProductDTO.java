@@ -4,6 +4,7 @@ import com.dextra.mentoria.products.entities.Product;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class ProductDTO {
@@ -59,5 +60,18 @@ public class ProductDTO {
 
     public Set<CategoryDTO> getCategories() {
         return categories;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDTO dto = (ProductDTO) o;
+        return id.equals(dto.id) && Objects.equals(name, dto.name) && Objects.equals(price, dto.price) && Objects.equals(categories, dto.categories);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, categories);
     }
 }

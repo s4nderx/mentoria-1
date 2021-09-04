@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 public class Factory {
 
     public static Product createProduct() {
-        Product product = new Product(1L, "Cadeira Gamer", new BigDecimal("1500.00"));
-        product.addCategory(new Category(2L, "Casa"));
+        Product product = new Product(1L, "Whisky Jack Daniels Honey", new BigDecimal("1500.00"));
+        product.addCategory(createCategory());
         return product;
     }
 
