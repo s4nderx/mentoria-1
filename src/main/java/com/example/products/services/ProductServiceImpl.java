@@ -61,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         Product entity = this.find(id);
         return new ProductDTO(entity);

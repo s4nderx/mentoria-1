@@ -33,9 +33,9 @@ public class CategoryController {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "12") Integer linesPerPage,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-            @RequestParam(value = "sort", defaultValue = "name") String orderBy
+            @RequestParam(value = "sort", defaultValue = "id") String sort
     ){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), sort);
         Page<CategoryDTO> list = this.service.findAllPaged(pageRequest);
         return  ResponseEntity.ok().body(list);
     }
