@@ -29,8 +29,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO create(ProductDTO dto) {
         Product product = new Product();
         this.copyDTOToEntity(dto, product);
-        product = repository.save(product);
-        return new ProductDTO(product);
+        return new ProductDTO(repository.save(product));
     }
 
     @Override
@@ -38,8 +37,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO update(Long id, ProductDTO dto) {
         Product product = this.find(id);
         this.copyDTOToEntity(dto, product);
-        product = repository.save(product);
-        return new ProductDTO(product);
+        return new ProductDTO(repository.save(product));
     }
 
     @Override
@@ -56,8 +54,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
-        Product entity = this.find(id);
-        return new ProductDTO(entity);
+        return new ProductDTO(this.find(id));
     }
 
     @Override

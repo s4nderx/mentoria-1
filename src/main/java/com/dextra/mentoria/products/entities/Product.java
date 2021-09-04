@@ -32,11 +32,10 @@ public class Product implements Serializable {
     )
     private Set<Category> categories = new HashSet<>();
 
-    public Product(Long id, String name, BigDecimal price, Instant createdAt) {
+    public Product(Long id, String name, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.createdAt = createdAt;
     }
 
     public Product() {

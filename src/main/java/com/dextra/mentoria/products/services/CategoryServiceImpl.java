@@ -44,15 +44,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO findById(Long id) {
-        Category category = this.find(id);
-        return new CategoryDTO(category);
+        return new CategoryDTO(this.find(id));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<CategoryDTO> findAllPaged(Pageable pageable) {
-        Page<Category> list = repository.findAll(pageable);
-        return list.map(CategoryDTO::new);
+        return repository.findAll(pageable).map(CategoryDTO::new);
     }
 
     @Override
