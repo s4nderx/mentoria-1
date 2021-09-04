@@ -15,8 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    private CategoryRepository repository;
+    private final CategoryRepository repository;
+
+    public CategoryServiceImpl(CategoryRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public CategoryDTO create(CategoryDTO dto) {
