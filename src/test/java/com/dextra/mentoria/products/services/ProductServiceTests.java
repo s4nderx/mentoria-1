@@ -1,13 +1,11 @@
 package com.dextra.mentoria.products.services;
 
-import com.dextra.mentoria.products.dto.CategoryDTO;
 import com.dextra.mentoria.products.dto.ProductDTO;
 import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.repositories.ProductRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
 import com.dextra.mentoria.products.tests.Factory;
-import com.dextra.mentoria.products.utils.SetUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +23,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -48,7 +45,7 @@ public class ProductServiceTests {
     private Product product;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         this.existingId = 1L;
         this.nonExistingId = Long.MAX_VALUE;
         this.dependentId = 5L;
@@ -76,9 +73,7 @@ public class ProductServiceTests {
 
     @Test
     public void deleteShouldDoNothingWhenIdExist(){
-        assertDoesNotThrow(() -> {
-            this.service.delete(this.existingId);
-        });
+        assertDoesNotThrow(() -> this.service.delete(this.existingId));
 
         verify(repository, times(1)).deleteById(this.existingId);
     }
