@@ -3,22 +3,15 @@ package com.example.products.services;
 import com.example.products.dto.ProductDTO;
 import com.example.products.entities.Category;
 import com.example.products.entities.Product;
-import com.example.products.repositories.CategoryRepository;
 import com.example.products.repositories.ProductRepository;
 import com.example.products.services.exceptions.DataIntegrityException;
 import com.example.products.services.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {

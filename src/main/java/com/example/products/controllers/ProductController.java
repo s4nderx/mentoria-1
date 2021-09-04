@@ -1,10 +1,7 @@
 package com.example.products.controllers;
 
-import com.example.products.dto.CategoryDTO;
 import com.example.products.dto.ProductDTO;
 import com.example.products.services.ProductService;
-import org.apache.juli.logging.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

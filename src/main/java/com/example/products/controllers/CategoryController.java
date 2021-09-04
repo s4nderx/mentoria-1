@@ -1,9 +1,7 @@
 package com.example.products.controllers;
 
 import com.example.products.dto.CategoryDTO;
-import com.example.products.entities.Category;
 import com.example.products.services.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

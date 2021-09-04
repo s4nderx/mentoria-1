@@ -1,6 +1,5 @@
 package com.example.products.dto;
 
-import com.example.products.entities.Category;
 import com.example.products.entities.Product;
 
 import java.math.BigDecimal;

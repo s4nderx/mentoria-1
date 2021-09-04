@@ -5,7 +5,6 @@ import com.example.products.entities.Category;
 import com.example.products.repositories.CategoryRepository;
 import com.example.products.services.exceptions.DataIntegrityException;
 import com.example.products.services.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
