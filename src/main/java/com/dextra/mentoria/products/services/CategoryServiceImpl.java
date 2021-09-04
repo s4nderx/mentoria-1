@@ -6,6 +6,7 @@ import com.dextra.mentoria.products.repositories.CategoryRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,16 +28,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void update(Long id, CategoryDTO dto) {
+    public CategoryDTO update(Long id, CategoryDTO dto) {
         Category category = this.find(id);
         category.setName(dto.getName());
-        this.repository.save(category);
+        category = this.repository.save(category);
+        return new CategoryDTO(category);
     }
 
     @Override
     public void delete(Long id){
         try {
             this.repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new NotFoundException("Id not found " + id);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("It is not possible to delete a category that has products");
         }
