@@ -45,7 +45,7 @@ public class ProductServiceTests {
     private Product product;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         this.existingId = 1L;
         this.nonExistingId = Long.MAX_VALUE;
         this.dependentId = 5L;
@@ -141,7 +141,6 @@ public class ProductServiceTests {
     @Test
     public void updateShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
         assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createProductDTO()));
-        verify(spy(this.service), times(1)).find(this.nonExistingId);
     }
 
     @Test
