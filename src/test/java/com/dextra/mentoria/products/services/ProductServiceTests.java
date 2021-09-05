@@ -129,6 +129,20 @@ public class ProductServiceTests {
         verify(this.repository, times(1)).save(any());
     }
 
+    @Test
+    public void updateShouldReturnAnProductWhenIdExist() {
+        ProductDTO dto = Factory.createProductDTO();
+        dto = this.service.update(this.existingId, dto);
+
+        assertNotNull(dto);
+        verify(this.repository, times(1)).save(any());
+    }
+
+    @Test
+    public void updateShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
+        assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createProductDTO()));
+        verify(spy(this.service), times(1)).find(this.nonExistingId);
+    }
 
     @Test
     public void updateShouldPersistChangesInAnExistingProduct() {

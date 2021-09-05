@@ -1,6 +1,7 @@
 package com.dextra.mentoria.products.services;
 
 import com.dextra.mentoria.products.dto.CategoryDTO;
+import com.dextra.mentoria.products.dto.ProductDTO;
 import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.repositories.CategoryRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
@@ -122,6 +123,21 @@ public class CategoryServiceTests {
         dto = this.service.create(dto);
         assertNotNull(dto.getId());
         verify(this.repository, times(1)).save(any());
+    }
+
+    @Test
+    public void updateShouldReturnAnCategoryWhenIdExist() {
+        CategoryDTO dto = Factory.createCategoryDTO();
+        dto = this.service.update(this.existingId, dto);
+
+        assertNotNull(dto);
+        verify(this.repository, times(1)).save(any());
+    }
+
+    @Test
+    public void updateShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
+        assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createCategoryDTO()));
+        verify(spy(this.service), times(1)).find(this.nonExistingId);
     }
 
     @Test
