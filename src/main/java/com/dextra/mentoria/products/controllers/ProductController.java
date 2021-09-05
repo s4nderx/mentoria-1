@@ -32,7 +32,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO dto, @PathVariable Long id){
         dto = this.service.update(id, dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-        return  ResponseEntity.created(uri).body(dto);
+        return  ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping(value = "/{id}")
