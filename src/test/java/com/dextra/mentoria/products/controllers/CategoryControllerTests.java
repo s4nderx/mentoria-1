@@ -84,6 +84,18 @@ public class CategoryControllerTests {
     }
 
     @Test
+    public void deleteShouldReturnBadRequestWhenIsDependentId() throws Exception {
+        String body = objectMapper.writeValueAsString(this.categoryDTO);
+        ResultActions result = this.mockMvc.perform(
+                delete("/categories/{id}", this.dependentId)
+                        .content(body)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void deleteShouldReturnNoContentWhenIdExist() throws Exception {
         String body = objectMapper.writeValueAsString(this.categoryDTO);
         ResultActions result = this.mockMvc.perform(
