@@ -11,6 +11,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -29,28 +32,27 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO dto, @PathVariable Long id){
-        dto = this.service.update(id, dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-        return  ResponseEntity.ok().body(dto);
+    @ResponseStatus(OK)
+    public ProductDTO update(@Valid @RequestBody ProductDTO dto, @PathVariable Long id){
+        return this.service.update(id, dto);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @ResponseStatus(NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         this.service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping()
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
-        Page<ProductDTO> list = this.service.findAllPaged(pageable);
-        return  ResponseEntity.ok().body(list);
+    @ResponseStatus(OK)
+    public Page<ProductDTO> findAll(Pageable pageable){
+        return this.service.findAllPaged(pageable);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
-        ProductDTO obj = this.service.findById(id);
-        return  ResponseEntity.ok().body(obj);
+    @ResponseStatus(OK)
+    public ProductDTO findById(@PathVariable Long id){
+        return this.service.findById(id);
     }
 
 }

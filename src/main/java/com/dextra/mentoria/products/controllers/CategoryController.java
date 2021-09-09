@@ -11,6 +11,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryController {
@@ -28,28 +30,28 @@ public class CategoryController {
         return  ResponseEntity.created(uri).body(dto);
     }
 
-    @GetMapping()
-    public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable){
-        Page<CategoryDTO> list = this.service.findAllPaged(pageable);
-        return  ResponseEntity.ok().body(list);
+    @GetMapping
+    @ResponseStatus(OK)
+    public Page<CategoryDTO> findAll(Pageable pageable){
+        return this.service.findAllPaged(pageable);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id){
-        CategoryDTO obj = this.service.findById(id);
-        return  ResponseEntity.ok().body(obj);
+    @ResponseStatus(OK)
+    public CategoryDTO findById(@PathVariable Long id){
+        return this.service.findById(id);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @ResponseStatus(NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         this.service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> update(@Valid @RequestBody CategoryDTO dto, @PathVariable Long id) {
-        CategoryDTO categoryDTO = this.service.update(id, dto);
-        return ResponseEntity.ok().body(categoryDTO);
+    @ResponseStatus(OK)
+    public CategoryDTO update(@Valid @RequestBody CategoryDTO dto, @PathVariable Long id) {
+        return this.service.update(id, dto);
     }
 
 }
