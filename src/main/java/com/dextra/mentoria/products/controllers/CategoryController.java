@@ -1,6 +1,6 @@
 package com.dextra.mentoria.products.controllers;
 
-import com.dextra.mentoria.products.services.CategoryService;
+import com.dextra.mentoria.products.services.ICategoryService;
 import com.dextra.mentoria.products.dto.CategoryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +17,9 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping(value = "/categories")
 public class CategoryController {
 
-    private final CategoryService service;
+    private final ICategoryService service;
 
-    public CategoryController(CategoryService service) {
+    public CategoryController(ICategoryService service) {
         this.service = service;
     }
 

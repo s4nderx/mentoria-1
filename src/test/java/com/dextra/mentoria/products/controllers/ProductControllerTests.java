@@ -1,7 +1,8 @@
 package com.dextra.mentoria.products.controllers;
 
-import com.dextra.mentoria.products.dto.ProductDTO;
-import com.dextra.mentoria.products.services.ProductServiceImpl;
+import com.dextra.mentoria.products.dto.request.ProductRequest;
+import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.services.ProductService;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
 import com.dextra.mentoria.products.tests.Factory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,13 +31,15 @@ public class ProductControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private ProductServiceImpl service;
+    private ProductService service;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    private ProductDTO productDTO;
-    private PageImpl<ProductDTO> page;
+    private ProductRequest productRequest;
+    private ProductResponse productResponse;
+
+    private PageImpl<ProductResponse> page;
     private Long existingId;
     private Long nonExistingId;
 
@@ -44,16 +47,17 @@ public class ProductControllerTests {
     void setUp() {
         this.existingId = 1L;
         this.nonExistingId = 2L;
-        this.productDTO = Factory.createProductDTO();
-        this.page = new PageImpl<>(List.of(this.productDTO));
+        this.productRequest = Factory.createProductRequest();
+        this.productResponse = Factory.createProductResponse();
+        this.page = new PageImpl<>(List.of(this.productResponse));
         when(service.findAllPaged(any())).thenReturn(page);
-        when(service.findById(this.existingId)).thenReturn(this.productDTO);
+        when(service.findById(this.existingId)).thenReturn(this.productResponse);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);
 
-        when(service.update(eq(this.existingId), any())).thenReturn(this.productDTO);
+        when(service.update(eq(this.existingId), any())).thenReturn(this.productResponse);
         when(service.update(eq(this.nonExistingId), any())).thenThrow(NotFoundException.class);
 
-        when(service.create(any())).thenReturn(this.productDTO);
+        when(service.create(any())).thenReturn(this.productResponse);
 
         doNothing().when(service).delete(this.existingId);
         doThrow(NotFoundException.class).when(service).delete(this.nonExistingId);
@@ -61,9 +65,7 @@ public class ProductControllerTests {
 
     @Test
     public void createShouldReturnProductDtoWhenIdExists() throws Exception {
-        ProductDTO dto = Factory.createProductDTO();
-        dto.setId(null);
-        String body = objectMapper.writeValueAsString(dto);
+        String body = objectMapper.writeValueAsString(this.productRequest);
 
         ResultActions result = this.mockMvc.perform(
                 post("/products")
@@ -83,7 +85,7 @@ public class ProductControllerTests {
 
     @Test
     public void deleteShouldReturnNoContentWhenIdExist() throws Exception {
-        String body = objectMapper.writeValueAsString(this.productDTO);
+        String body = objectMapper.writeValueAsString(this.productRequest);
         ResultActions result = this.mockMvc.perform(
                 delete("/products/{id}", this.existingId)
                         .content(body)
@@ -95,7 +97,7 @@ public class ProductControllerTests {
 
     @Test
     public void deleteShoulReturnNotfoundWhenIdDoesNotExist() throws Exception {
-        String body = objectMapper.writeValueAsString(this.productDTO);
+        String body = objectMapper.writeValueAsString(this.productRequest);
         ResultActions result = this.mockMvc.perform(
                 delete("/products/{id}", this.nonExistingId)
                         .content(body)
@@ -108,7 +110,7 @@ public class ProductControllerTests {
     @Test
     public void updateSouldReturnProductDtoWhenIdExists() throws Exception {
 
-        String body = objectMapper.writeValueAsString(this.productDTO);
+        String body = objectMapper.writeValueAsString(this.productRequest);
 
         ResultActions result = this.mockMvc.perform(
             put("/products/{id}", this.existingId)
@@ -126,7 +128,7 @@ public class ProductControllerTests {
 
     @Test
     public void updateSouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-        String body = objectMapper.writeValueAsString(this.productDTO);
+        String body = objectMapper.writeValueAsString(this.productRequest);
 
         ResultActions result = this.mockMvc.perform(
                 put("/products/{id}", this.nonExistingId)

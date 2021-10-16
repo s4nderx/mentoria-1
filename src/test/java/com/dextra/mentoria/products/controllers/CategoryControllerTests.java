@@ -1,7 +1,7 @@
 package com.dextra.mentoria.products.controllers;
 
 import com.dextra.mentoria.products.dto.CategoryDTO;
-import com.dextra.mentoria.products.services.CategoryServiceImpl;
+import com.dextra.mentoria.products.services.CategoryService;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
 import com.dextra.mentoria.products.tests.Factory;
@@ -32,7 +32,7 @@ public class CategoryControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private CategoryServiceImpl service;
+    private CategoryService service;
 
     @Autowired
     private ObjectMapper objectMapper;

@@ -1,5 +1,6 @@
-package com.dextra.mentoria.products.dto;
+package com.dextra.mentoria.products.dto.response;
 
+import com.dextra.mentoria.products.dto.CategoryDTO;
 import com.dextra.mentoria.products.entities.Product;
 
 import java.math.BigDecimal;
@@ -7,27 +8,20 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class ProductDTO {
-
+public class ProductResponse {
     private Long id;
     private String name;
     private BigDecimal price;
-    private final Set<CategoryDTO> categories = new HashSet<>();
+    private Set<CategoryDTO> categories = new HashSet<>();
 
-    public ProductDTO(Long id, String name, BigDecimal price) {
+    @Deprecated
+    public ProductResponse() {
+    }
+
+    public ProductResponse(Long id, String name, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.price = price;
-    }
-
-    public ProductDTO(Product entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.price = entity.getPrice();
-        entity.getCategories().forEach(cat -> {
-            this.categories.add(new CategoryDTO(cat));
-        });
-
     }
 
     public Long getId() {
@@ -62,11 +56,16 @@ public class ProductDTO {
         return categories;
     }
 
+    @Deprecated
+    public void setCategories(Set<CategoryDTO> categories) {
+        this.categories = categories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductDTO dto = (ProductDTO) o;
+        ProductResponse dto = (ProductResponse) o;
         return id.equals(dto.id) && Objects.equals(name, dto.name) && Objects.equals(price, dto.price) && Objects.equals(categories, dto.categories);
     }
 

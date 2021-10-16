@@ -14,6 +14,10 @@ public class CategoryDTO {
     @Length(min = 3, max = 80, message = "O tamanho deve ser entre 3 e 80 caracteres")
     private String name;
 
+    @Deprecated
+    public CategoryDTO() {
+    }
+
     public CategoryDTO(String name, Long id) {
         this.id = id;
         this.name = name;

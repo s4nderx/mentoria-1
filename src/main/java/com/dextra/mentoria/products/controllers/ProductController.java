@@ -1,7 +1,8 @@
 package com.dextra.mentoria.products.controllers;
 
-import com.dextra.mentoria.products.dto.ProductDTO;
-import com.dextra.mentoria.products.services.ProductService;
+import com.dextra.mentoria.products.dto.request.ProductRequest;
+import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.services.IProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,23 +19,23 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping(value = "/products")
 public class ProductController {
 
-    private final ProductService service;
+    private final IProductService service;
 
-    public ProductController(ProductService service) {
+    public ProductController(IProductService service) {
         this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
-        dto = this.service.create(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-        return  ResponseEntity.created(uri).body(dto);
+    public ResponseEntity<ProductResponse> insert(@Valid @RequestBody ProductRequest request){
+        ProductResponse response = this.service.create(request);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.getId()).toUri();
+        return  ResponseEntity.created(uri).body(response);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(OK)
-    public ProductDTO update(@Valid @RequestBody ProductDTO dto, @PathVariable Long id){
-        return this.service.update(id, dto);
+    public ProductResponse update(@Valid @RequestBody ProductRequest request, @PathVariable Long id){
+        return this.service.update(id, request);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -45,13 +46,13 @@ public class ProductController {
 
     @GetMapping()
     @ResponseStatus(OK)
-    public Page<ProductDTO> findAll(Pageable pageable){
+    public Page<ProductResponse> findAll(Pageable pageable){
         return this.service.findAllPaged(pageable);
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(OK)
-    public ProductDTO findById(@PathVariable Long id){
+    public ProductResponse findById(@PathVariable Long id){
         return this.service.findById(id);
     }
 

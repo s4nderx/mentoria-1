@@ -89,6 +89,11 @@ public class Product implements Serializable {
         this.categories.add(category);
     }
 
+    @Deprecated
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
     @PrePersist
     public void PrePersist() {
         createdAt = Instant.now();

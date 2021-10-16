@@ -1,8 +1,9 @@
 package com.dextra.mentoria.products.services;
 
-import com.dextra.mentoria.products.dto.CategoryDTO;
-import com.dextra.mentoria.products.entities.Category;
-import com.dextra.mentoria.products.repositories.CategoryRepository;
+import com.dextra.mentoria.products.dto.request.ProductRequest;
+import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.entities.Product;
+import com.dextra.mentoria.products.repositories.ProductRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
 import com.dextra.mentoria.products.tests.Factory;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,41 +30,49 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-public class CategoryServiceTests {
+public class IProductServiceTests {
 
     @InjectMocks
-    private CategoryServiceImpl service;
+    private ProductService service;
 
     @Mock
-    private CategoryRepository repository;
+    private ProductRepository repository;
+
+    @Mock
+    private ICategoryService ICategoryService;
+
+    @Mock
+    private ModelMapper modelMapper;
 
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
-    private Category category;
+    private Product product;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         this.existingId = 1L;
         this.nonExistingId = Long.MAX_VALUE;
         this.dependentId = 5L;
-        this.category = Factory.createCategory();
-        PageImpl<Category> page = new PageImpl<>(List.of(this.category));
+        this.product = Factory.createProduct();
+        PageImpl<Product> page = new PageImpl<>(List.of(this.product));
 
         when(repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
-        when(repository.save(any())).thenReturn(this.category);
-        when(repository.findById(this.existingId)).thenReturn(Optional.of(this.category));
+        when(repository.save(any())).thenReturn(this.product);
+        when(repository.findById(this.existingId)).thenReturn(Optional.of(this.product));
         when(repository.findById(this.nonExistingId)).thenReturn(Optional.empty());
         doNothing().when(repository).deleteById(this.existingId);
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(this.nonExistingId);
         doThrow(DataIntegrityViolationException.class).when(repository).deleteById(this.dependentId);
-
+        when(ICategoryService.find(this.existingId)).thenReturn(Factory.createCategory());
+        when(modelMapper.map(any(), eq(Product.class))).thenReturn(Factory.createProduct());
+        when(modelMapper.map(any(), eq(ProductResponse.class))).thenReturn(Factory.createProductResponse());
     }
 
     @Test
     public void findAllPagedShouldReturnPage(){
         Pageable pageable = PageRequest.of(0, 10);
-        Page<CategoryDTO> res = service.findAllPaged(pageable);
+        Page<ProductResponse> res = service.findAllPaged(pageable);
         assertNotNull(res);
         verify(repository, times(1)).findAll(pageable);
     }
@@ -89,10 +100,10 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void findShouldReturnAnCategoryWhenIdExist() {
-        Category category = this.service.find(this.existingId);
-        assertNotNull(category);
-        assertEquals(category, this.category);
+    public void findShouldReturnAnProductWhenIdExist() {
+        Product product = this.service.find(this.existingId);
+        assertNotNull(product);
+        assertEquals(product, this.product);
         verify(repository, times(1)).findById(this.existingId);
     }
 
@@ -103,8 +114,8 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void findByIdShouldReturnAnCategoryDtoWhenIdExist() {
-        CategoryDTO dto = this.service.findById(this.existingId);
+    public void findByIdShouldReturnAnProductResponseWhenIdExist() {
+        ProductResponse dto = this.service.findById(this.existingId);
         assertNotNull(dto);
         verify(repository, times(1)).findById(this.existingId);
     }
@@ -116,37 +127,38 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void createShouldReturnAnNewCategoryDtoWithIdWhenIdIsNull() {
-        CategoryDTO dto = Factory.createCategoryDTO();
-        dto.setId(null);
-        dto = this.service.create(dto);
-        assertNotNull(dto.getId());
+    public void createShouldReturnAnNewProductResponseWithIdWhenIdIsNull() {
+        ProductRequest request = Factory.createProductRequest();
+        ProductResponse response = this.service.create(request);
+        assertNotNull(response.getId());
         verify(this.repository, times(1)).save(any());
     }
 
     @Test
-    public void updateShouldReturnAnCategoryWhenIdExist() {
-        CategoryDTO dto = Factory.createCategoryDTO();
-        dto = this.service.update(this.existingId, dto);
+    public void updateShouldReturnAnProductResponseWhenIdExist() {
+        ProductRequest request = Factory.createProductRequest();
+        ProductResponse response = this.service.update(this.existingId, request);
 
-        assertNotNull(dto);
+        assertNotNull(response);
         verify(this.repository, times(1)).save(any());
     }
 
     @Test
     public void updateShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
-        assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createCategoryDTO()));
+        assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createProductRequest()));
     }
 
     @Test
-    public void updateShouldPersistChangesInAnExistingCategory() {
-        CategoryDTO dto = Factory.createCategoryDTO();
-        dto.setName("TESTS");
+    public void updateShouldPersistChangesInAnExistingProduct() {
+        ProductRequest request = Factory.createProductRequest();
+        request.setName("TESTS");
+        request.setPrice(new BigDecimal("1.0"));
 
-        CategoryDTO updatedDTO = this.service.update(this.existingId, dto);
+        ProductResponse update = this.service.update(this.existingId, request);
 
-        assertEquals(updatedDTO.getId(), dto.getId());
-        assertEquals(updatedDTO.getName(), dto.getName());
+        assertEquals(request.getCategories(), update.getCategories());
+        assertEquals(request.getName(), update.getName());
+        assertEquals(request.getPrice(), update.getPrice());
 
         verify(this.repository, times(1)).save(any());
     }

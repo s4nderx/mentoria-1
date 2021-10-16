@@ -1,7 +1,8 @@
 package com.dextra.mentoria.products.tests;
 
 import com.dextra.mentoria.products.dto.CategoryDTO;
-import com.dextra.mentoria.products.dto.ProductDTO;
+import com.dextra.mentoria.products.dto.request.ProductRequest;
+import com.dextra.mentoria.products.dto.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.entities.Product;
 
@@ -15,9 +16,18 @@ public class Factory {
         return product;
     }
 
-    public static ProductDTO createProductDTO() {
-        return new ProductDTO(createProduct());
+    public static ProductRequest createProductRequest() {
+        ProductRequest productRequest = new ProductRequest("Whisky Jack Daniels Honey", new BigDecimal("1500.00"));
+        productRequest.addCategory(createCategoryDTO());
+        return productRequest;
     }
+
+    public static ProductResponse createProductResponse() {
+        ProductResponse productResponse = new ProductResponse(1L, "Whisky Jack Daniels Honey", new BigDecimal("1500.00"));
+        productResponse.addCategory(createCategoryDTO());
+        return productResponse;
+    }
+
 
     public static Category createCategory(){
         return new Category(1L, "Bebidas");
