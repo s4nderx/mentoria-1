@@ -21,6 +21,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -54,8 +55,8 @@ public class ProductControllerTests {
         when(service.findById(this.existingId)).thenReturn(this.productResponse);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);
 
-        when(service.update(eq(this.existingId), any())).thenReturn(this.productResponse);
-        when(service.update(eq(this.nonExistingId), any())).thenThrow(NotFoundException.class);
+        doNothing().when(service).update(eq(this.existingId), any());
+        doThrow(NotFoundException.class).when(service).update(eq(this.nonExistingId), any());
 
         when(service.create(any())).thenReturn(this.productResponse);
 
@@ -119,11 +120,7 @@ public class ProductControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
-        result.andExpect(status().isOk());
-        result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath("$.name").exists());
-        result.andExpect(jsonPath("$.price").exists());
-        result.andExpect(jsonPath("$.categories").exists());
+        result.andExpect(status().isNoContent());
     }
 
     @Test

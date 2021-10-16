@@ -39,10 +39,10 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public ProductResponse update(Long id, ProductRequest dto) {
+    public void update(Long id, ProductRequest dto) {
         Product product = this.find(id);
         this.copyDTOToEntity(dto, product);
-        return modelMapper.map(repository.save(product), ProductResponse.class);
+        repository.save(product);
     }
 
     @Override

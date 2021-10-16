@@ -137,30 +137,14 @@ public class IProductServiceTests {
     @Test
     public void updateShouldReturnAnProductResponseWhenIdExist() {
         ProductRequest request = Factory.createProductRequest();
-        ProductResponse response = this.service.update(this.existingId, request);
+        this.service.update(this.existingId, request);
 
-        assertNotNull(response);
         verify(this.repository, times(1)).save(any());
     }
 
     @Test
     public void updateShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
         assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createProductRequest()));
-    }
-
-    @Test
-    public void updateShouldPersistChangesInAnExistingProduct() {
-        ProductRequest request = Factory.createProductRequest();
-        request.setName("TESTS");
-        request.setPrice(new BigDecimal("1.0"));
-
-        ProductResponse update = this.service.update(this.existingId, request);
-
-        assertEquals(request.getCategories(), update.getCategories());
-        assertEquals(request.getName(), update.getName());
-        assertEquals(request.getPrice(), update.getPrice());
-
-        verify(this.repository, times(1)).save(any());
     }
 
 }

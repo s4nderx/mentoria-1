@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface IProductService {
 
     ProductResponse create(ProductRequest request);
-    ProductResponse update(Long id, ProductRequest request);
+    void update(Long id, ProductRequest request);
     void delete(Long id);
     ProductResponse findById(Long id);
     Page<ProductResponse> findAllPaged(Pageable pageable);

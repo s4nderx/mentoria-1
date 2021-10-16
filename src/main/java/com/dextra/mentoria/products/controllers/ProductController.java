@@ -33,9 +33,9 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(OK)
-    public ProductResponse update(@Valid @RequestBody ProductRequest request, @PathVariable Long id){
-        return this.service.update(id, request);
+    @ResponseStatus(NO_CONTENT)
+    public void update(@Valid @RequestBody ProductRequest request, @PathVariable Long id){
+        this.service.update(id, request);
     }
 
     @DeleteMapping(value = "/{id}")
