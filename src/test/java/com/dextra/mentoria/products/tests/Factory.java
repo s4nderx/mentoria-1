@@ -1,7 +1,8 @@
 package com.dextra.mentoria.products.tests;
 
-import com.dextra.mentoria.products.dto.CategoryDTO;
+import com.dextra.mentoria.products.dto.request.CategoryRequest;
 import com.dextra.mentoria.products.dto.request.ProductRequest;
+import com.dextra.mentoria.products.dto.response.CategoryResponse;
 import com.dextra.mentoria.products.dto.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.entities.Product;
@@ -18,13 +19,13 @@ public class Factory {
 
     public static ProductRequest createProductRequest() {
         ProductRequest productRequest = new ProductRequest("Whisky Jack Daniels Honey", new BigDecimal("1500.00"));
-        productRequest.addCategory(createCategoryDTO());
+        productRequest.addCategory(createCategoryResponse());
         return productRequest;
     }
 
     public static ProductResponse createProductResponse() {
         ProductResponse productResponse = new ProductResponse(1L, "Whisky Jack Daniels Honey", new BigDecimal("1500.00"));
-        productResponse.addCategory(createCategoryDTO());
+        productResponse.addCategory(createCategoryResponse());
         return productResponse;
     }
 
@@ -34,8 +35,13 @@ public class Factory {
     }
 
 
-    public static CategoryDTO createCategoryDTO(){
-        return new CategoryDTO(createCategory());
+    public static CategoryRequest createCategoryRequest() {
+        return new CategoryRequest("Bebidas");
     }
+
+    public static CategoryResponse createCategoryResponse() {
+        return new CategoryResponse(1L, "Bebidas");
+    }
+
 
 }

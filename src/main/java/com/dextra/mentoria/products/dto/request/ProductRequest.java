@@ -1,6 +1,6 @@
 package com.dextra.mentoria.products.dto.request;
 
-import com.dextra.mentoria.products.dto.CategoryDTO;
+import com.dextra.mentoria.products.dto.response.CategoryResponse;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ public class ProductRequest {
 
     private String name;
     private BigDecimal price;
-    private Set<CategoryDTO> categories = new HashSet<>();
+    private Set<CategoryResponse> categories = new HashSet<CategoryResponse>();
 
     @Deprecated
     public void ProductRequest() {
@@ -38,16 +38,16 @@ public class ProductRequest {
         this.price = price;
     }
 
-    public void addCategory(CategoryDTO category) {
+    public void addCategory(CategoryResponse category) {
         this.categories.add(category);
     }
 
-    public Set<CategoryDTO> getCategories() {
+    public Set<CategoryResponse> getCategories() {
         return categories;
     }
 
     @Deprecated
-    public void setCategories(Set<CategoryDTO> categories) {
+    public void setCategories(Set<CategoryResponse> categories) {
         this.categories = categories;
     }
 

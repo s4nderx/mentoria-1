@@ -1,7 +1,10 @@
 package com.dextra.mentoria.products.services;
 
-import com.dextra.mentoria.products.dto.CategoryDTO;
+import com.dextra.mentoria.products.dto.request.CategoryRequest;
+import com.dextra.mentoria.products.dto.response.CategoryResponse;
+import com.dextra.mentoria.products.dto.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Category;
+import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.repositories.CategoryRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -35,6 +39,9 @@ public class ICategoryServiceTests {
     @Mock
     private CategoryRepository repository;
 
+    @Mock
+    private ModelMapper modelMapper;
+
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
@@ -56,12 +63,15 @@ public class ICategoryServiceTests {
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(this.nonExistingId);
         doThrow(DataIntegrityViolationException.class).when(repository).deleteById(this.dependentId);
 
+        when(modelMapper.map(any(), eq(Category.class))).thenReturn(Factory.createCategory());
+        when(modelMapper.map(any(), eq(CategoryResponse.class))).thenReturn(Factory.createCategoryResponse());
+
     }
 
     @Test
     public void findAllPagedShouldReturnPage(){
         Pageable pageable = PageRequest.of(0, 10);
-        Page<CategoryDTO> res = service.findAllPaged(pageable);
+        Page<CategoryResponse> res = service.findAllPaged(pageable);
         assertNotNull(res);
         verify(repository, times(1)).findAll(pageable);
     }
@@ -104,7 +114,7 @@ public class ICategoryServiceTests {
 
     @Test
     public void findByIdShouldReturnAnCategoryDtoWhenIdExist() {
-        CategoryDTO dto = this.service.findById(this.existingId);
+        CategoryResponse dto = this.service.findById(this.existingId);
         assertNotNull(dto);
         verify(repository, times(1)).findById(this.existingId);
     }
@@ -117,38 +127,20 @@ public class ICategoryServiceTests {
 
     @Test
     public void createShouldReturnAnNewCategoryDtoWithIdWhenIdIsNull() {
-        CategoryDTO dto = Factory.createCategoryDTO();
-        dto.setId(null);
-        dto = this.service.create(dto);
-        assertNotNull(dto.getId());
+        CategoryResponse categoryResponse = this.service.create(Factory.createCategoryRequest());
+        assertNotNull(categoryResponse.getId());
         verify(this.repository, times(1)).save(any());
     }
 
     @Test
     public void updateShouldReturnAnCategoryWhenIdExist() {
-        CategoryDTO dto = Factory.createCategoryDTO();
-        dto = this.service.update(this.existingId, dto);
-
-        assertNotNull(dto);
+        this.service.update(this.existingId, Factory.createCategoryRequest());
         verify(this.repository, times(1)).save(any());
     }
 
     @Test
     public void updateShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
-        assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createCategoryDTO()));
-    }
-
-    @Test
-    public void updateShouldPersistChangesInAnExistingCategory() {
-        CategoryDTO dto = Factory.createCategoryDTO();
-        dto.setName("TESTS");
-
-        CategoryDTO updatedDTO = this.service.update(this.existingId, dto);
-
-        assertEquals(updatedDTO.getId(), dto.getId());
-        assertEquals(updatedDTO.getName(), dto.getName());
-
-        verify(this.repository, times(1)).save(any());
+        assertThrows(NotFoundException.class, () -> this.service.update(this.nonExistingId, Factory.createCategoryRequest()));
     }
 
 }

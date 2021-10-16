@@ -1,7 +1,8 @@
 package com.dextra.mentoria.products.controllers;
 
+import com.dextra.mentoria.products.dto.request.CategoryRequest;
+import com.dextra.mentoria.products.dto.response.CategoryResponse;
 import com.dextra.mentoria.products.services.ICategoryService;
-import com.dextra.mentoria.products.dto.CategoryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -24,21 +26,21 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO dto){
-        dto = this.service.create(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-        return  ResponseEntity.created(uri).body(dto);
+    public ResponseEntity<CategoryResponse> insert(@Valid @RequestBody CategoryRequest request){
+        CategoryResponse categoryResponse = this.service.create(request);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoryResponse.getId()).toUri();
+        return  ResponseEntity.created(uri).body(categoryResponse);
     }
 
     @GetMapping
     @ResponseStatus(OK)
-    public Page<CategoryDTO> findAll(Pageable pageable){
+    public Page<CategoryResponse> findAll(Pageable pageable){
         return this.service.findAllPaged(pageable);
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(OK)
-    public CategoryDTO findById(@PathVariable Long id){
+    public CategoryResponse findById(@PathVariable Long id){
         return this.service.findById(id);
     }
 
@@ -49,9 +51,9 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(OK)
-    public CategoryDTO update(@Valid @RequestBody CategoryDTO dto, @PathVariable Long id) {
-        return this.service.update(id, dto);
+    @ResponseStatus(NO_CONTENT)
+    public void update(@Valid @RequestBody CategoryRequest dto, @PathVariable Long id) {
+        this.service.update(id, dto);
     }
 
 }

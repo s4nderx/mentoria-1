@@ -1,10 +1,12 @@
 package com.dextra.mentoria.products.services;
 
-import com.dextra.mentoria.products.dto.CategoryDTO;
+import com.dextra.mentoria.products.dto.request.CategoryRequest;
+import com.dextra.mentoria.products.dto.response.CategoryResponse;
 import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.repositories.CategoryRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -15,24 +17,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CategoryService implements ICategoryService {
 
+    private static final Class<CategoryResponse> responseClass = CategoryResponse.class;
+
     private final CategoryRepository repository;
 
-    public CategoryService(CategoryRepository repository) {
+    private final ModelMapper modelMapper;
+
+    public CategoryService(CategoryRepository repository, ModelMapper modelMapper) {
         this.repository = repository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public CategoryDTO create(CategoryDTO dto) {
-        Category category = this.repository.save(new Category(null, dto.getName()));
-        return new CategoryDTO(category);
+    public CategoryResponse create(CategoryRequest request) {
+        Category category = this.repository.save(new Category(null, request.getName()));
+        return modelMapper.map(category, responseClass);
     }
 
     @Override
-    public CategoryDTO update(Long id, CategoryDTO dto) {
+    public void update(Long id, CategoryRequest request) {
         Category category = this.find(id);
-        category.setName(dto.getName());
-        category = this.repository.save(category);
-        return new CategoryDTO(category);
+        category.setName(request.getName());
+        this.repository.save(category);
     }
 
     @Override
@@ -47,14 +53,15 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO findById(Long id) {
-        return new CategoryDTO(this.find(id));
+    public CategoryResponse findById(Long id) {
+        Category category = this.find(id);
+        return modelMapper.map(category, responseClass);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CategoryDTO> findAllPaged(Pageable pageable) {
-        return repository.findAll(pageable).map(CategoryDTO::new);
+    public Page<CategoryResponse> findAllPaged(Pageable pageable) {
+        return repository.findAll(pageable).map(category -> modelMapper.map(category, responseClass));
     }
 
     @Override

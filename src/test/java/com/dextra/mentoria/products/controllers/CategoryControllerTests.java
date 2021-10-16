@@ -1,6 +1,7 @@
 package com.dextra.mentoria.products.controllers;
 
-import com.dextra.mentoria.products.dto.CategoryDTO;
+import com.dextra.mentoria.products.dto.request.CategoryRequest;
+import com.dextra.mentoria.products.dto.response.CategoryResponse;
 import com.dextra.mentoria.products.services.CategoryService;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
@@ -37,8 +38,10 @@ public class CategoryControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private CategoryDTO categoryDTO;
-    private PageImpl<CategoryDTO> page;
+    private CategoryRequest categoryRequest;
+    private CategoryResponse categoryResponse;
+
+    private PageImpl<CategoryResponse> page;
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
@@ -48,27 +51,28 @@ public class CategoryControllerTests {
         this.existingId = 1L;
         this.nonExistingId = 2L;
         this.dependentId  = 3L;
-        this.categoryDTO = Factory.createCategoryDTO();
-        this.page = new PageImpl<>(List.of(this.categoryDTO));
+        this.categoryRequest = Factory.createCategoryRequest();
+        this.categoryResponse = Factory.createCategoryResponse();
+
+        this.page = new PageImpl<>(List.of(this.categoryResponse));
+
         when(service.findAllPaged(any())).thenReturn(page);
-        when(service.findById(this.existingId)).thenReturn(this.categoryDTO);
+        when(service.findById(this.existingId)).thenReturn(this.categoryResponse);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);
-
-        when(service.update(eq(this.existingId), any())).thenReturn(this.categoryDTO);
-        when(service.update(eq(this.nonExistingId), any())).thenThrow(NotFoundException.class);
-
-        when(service.create(any())).thenReturn(this.categoryDTO);
+        when(service.create(any())).thenReturn(this.categoryResponse);
 
         doNothing().when(service).delete(this.existingId);
+        doNothing().when(service).update(eq(this.existingId), any());
+
         doThrow(NotFoundException.class).when(service).delete(this.nonExistingId);
         doThrow(DataIntegrityException.class).when(service).delete(this.dependentId);
+        doThrow(NotFoundException.class).when(service).update(eq(this.nonExistingId), any());
+
     }
 
     @Test
     public void createShouldReturnCategoryDtoWhenIdExists() throws Exception {
-        CategoryDTO dto = Factory.createCategoryDTO();
-        dto.setId(null);
-        String body = objectMapper.writeValueAsString(dto);
+        String body = objectMapper.writeValueAsString(Factory.createProductRequest());
 
         ResultActions result = this.mockMvc.perform(
                 post("/categories")
@@ -85,7 +89,7 @@ public class CategoryControllerTests {
 
     @Test
     public void deleteShouldReturnBadRequestWhenIsDependentId() throws Exception {
-        String body = objectMapper.writeValueAsString(this.categoryDTO);
+        String body = objectMapper.writeValueAsString(Factory.createProductRequest());
         ResultActions result = this.mockMvc.perform(
                 delete("/categories/{id}", this.dependentId)
                         .content(body)
@@ -97,7 +101,7 @@ public class CategoryControllerTests {
 
     @Test
     public void deleteShouldReturnNoContentWhenIdExist() throws Exception {
-        String body = objectMapper.writeValueAsString(this.categoryDTO);
+        String body = objectMapper.writeValueAsString(Factory.createProductRequest());
         ResultActions result = this.mockMvc.perform(
                 delete("/categories/{id}", this.existingId)
                         .content(body)
@@ -109,7 +113,7 @@ public class CategoryControllerTests {
 
     @Test
     public void deleteShoulReturnNotfoundWhenIdDoesNotExist() throws Exception {
-        String body = objectMapper.writeValueAsString(this.categoryDTO);
+        String body = objectMapper.writeValueAsString(Factory.createProductRequest());
         ResultActions result = this.mockMvc.perform(
                 delete("/categories/{id}", this.nonExistingId)
                         .content(body)
@@ -122,7 +126,7 @@ public class CategoryControllerTests {
     @Test
     public void updateSouldReturnCategoryDtoWhenIdExists() throws Exception {
 
-        String body = objectMapper.writeValueAsString(this.categoryDTO);
+        String body = objectMapper.writeValueAsString(Factory.createProductRequest());
 
         ResultActions result = this.mockMvc.perform(
             put("/categories/{id}", this.existingId)
@@ -131,14 +135,12 @@ public class CategoryControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
-        result.andExpect(status().isOk());
-        result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(status().isNoContent());
     }
 
     @Test
     public void updateSouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-        String body = objectMapper.writeValueAsString(this.categoryDTO);
+        String body = objectMapper.writeValueAsString(Factory.createProductRequest());
 
         ResultActions result = this.mockMvc.perform(
                 put("/categories/{id}", this.nonExistingId)
