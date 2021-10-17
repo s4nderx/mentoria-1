@@ -1,8 +1,7 @@
 package com.dextra.mentoria.products.controllers;
 
-import com.dextra.mentoria.products.controllers.serialization.ProductSerialization;
-import com.dextra.mentoria.products.dto.request.ProductRequest;
-import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.dtos.request.ProductRequest;
+import com.dextra.mentoria.products.dtos.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.services.ProductService;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
@@ -10,10 +9,8 @@ import com.dextra.mentoria.products.tests.Factory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;

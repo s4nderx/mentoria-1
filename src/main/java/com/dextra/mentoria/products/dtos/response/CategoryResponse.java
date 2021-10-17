@@ -1,4 +1,4 @@
-package com.dextra.mentoria.products.dto.response;
+package com.dextra.mentoria.products.dtos.response;
 
 import com.dextra.mentoria.products.entities.Category;
 

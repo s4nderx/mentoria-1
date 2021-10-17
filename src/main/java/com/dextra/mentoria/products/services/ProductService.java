@@ -1,7 +1,7 @@
 package com.dextra.mentoria.products.services;
 
-import com.dextra.mentoria.products.dto.request.ProductRequest;
-import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.dtos.request.ProductRequest;
+import com.dextra.mentoria.products.dtos.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.repositories.ProductRepository;
@@ -104,7 +104,11 @@ public class ProductService implements IProductService {
             JsonNode patchJsonNode = patch.apply(jsonNode);
             Product productPersist = objectMapper.treeToValue(patchJsonNode, Product.class);
             return this.repository.save(productPersist);
-        } catch (JsonPatchException | JsonProcessingException e) {
+        } catch (JsonPatchException e) {
+            System.out.println(e.toString());
+            throw new NotFoundException("Id not found " + id);
+        } catch (JsonProcessingException e){
+            System.out.println(e.toString());
             throw new NotFoundException("Id not found " + id);
         }
     }

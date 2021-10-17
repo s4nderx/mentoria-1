@@ -1,8 +1,8 @@
 package com.dextra.mentoria.products.controllers;
 
 import com.dextra.mentoria.products.controllers.exceptions.StandardError;
-import com.dextra.mentoria.products.dto.request.ProductRequest;
-import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.dtos.request.ProductRequest;
+import com.dextra.mentoria.products.dtos.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Product;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -116,6 +116,50 @@ public interface IProductController {
     )
     Product findById(@PathVariable Long id);
 
+
+    @Operation(
+            summary = "Patch update in a product",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "404",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            value =
+                                                    """
+                                                                    {
+                                                                        "timestamp": "2021-10-17T14:55:30.385445300Z",
+                                                                        "status": 404,
+                                                                        "error": "Resource not found",
+                                                                        "message": "Entity not found.",
+                                                                        "path": "/products/1000"
+                                                                    }
+                                                            """
+                                    ),
+                                    schema = @Schema(implementation = StandardError.class)
+                            )
+                    )
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "JsonPatch body.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    value = """
+                                            [
+                                             { "op": "test",  "path": "/attribute",  "value": "value to test"  },
+                                             { "op": "remove",  "path": "/attribute"  },
+                                             { "op": "add",  "path": "/attribute",  "value": [ "new", "value" ] },
+                                             { "op": "replace", "path": "/attribute",  "value": 42 },
+                                             { "op": "move",  "from": "/attribute",  "path": "/attribute" },
+                                             { "op": "copy", "from": "/attribute",  "path": "/attribute" }
+                                             ]
+                                            """
+                            )
+                    )
+            )
+
+    )
     @PatchMapping("/{id}")
     Product patchUpdate(@PathVariable Long id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException;
 }

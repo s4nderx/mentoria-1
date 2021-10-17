@@ -1,4 +1,4 @@
-package com.dextra.mentoria.products.dto.request;
+package com.dextra.mentoria.products.dtos.request;
 
 import com.dextra.mentoria.products.entities.Category;
 import org.hibernate.validator.constraints.Length;

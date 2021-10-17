@@ -1,6 +1,6 @@
-package com.dextra.mentoria.products.controllers.serialization;
+package com.dextra.mentoria.products.controllers.serializations;
 
-import com.dextra.mentoria.products.dto.response.CategoryResponse;
+import com.dextra.mentoria.products.dtos.response.CategoryResponse;
 import com.dextra.mentoria.products.entities.Category;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

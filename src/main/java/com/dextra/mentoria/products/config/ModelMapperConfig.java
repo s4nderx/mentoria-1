@@ -1,7 +1,7 @@
 package com.dextra.mentoria.products.config;
 
-import com.dextra.mentoria.products.dto.request.ProductRequest;
-import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.dtos.request.ProductRequest;
+import com.dextra.mentoria.products.dtos.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

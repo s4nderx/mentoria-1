@@ -1,6 +1,6 @@
-package com.dextra.mentoria.products.dto.request;
+package com.dextra.mentoria.products.dtos.request;
 
-import com.dextra.mentoria.products.dto.response.CategoryResponse;
+import com.dextra.mentoria.products.dtos.response.CategoryResponse;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.DecimalMin;

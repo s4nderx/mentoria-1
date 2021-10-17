@@ -1,9 +1,9 @@
 package com.dextra.mentoria.products.tests;
 
-import com.dextra.mentoria.products.dto.request.CategoryRequest;
-import com.dextra.mentoria.products.dto.request.ProductRequest;
-import com.dextra.mentoria.products.dto.response.CategoryResponse;
-import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.dtos.request.CategoryRequest;
+import com.dextra.mentoria.products.dtos.request.ProductRequest;
+import com.dextra.mentoria.products.dtos.response.CategoryResponse;
+import com.dextra.mentoria.products.dtos.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.entities.Product;
 

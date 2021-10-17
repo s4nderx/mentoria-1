@@ -1,7 +1,7 @@
 package com.dextra.mentoria.products.controllers;
 
-import com.dextra.mentoria.products.dto.request.CategoryRequest;
-import com.dextra.mentoria.products.dto.response.CategoryResponse;
+import com.dextra.mentoria.products.dtos.request.CategoryRequest;
+import com.dextra.mentoria.products.dtos.response.CategoryResponse;
 import com.dextra.mentoria.products.services.ICategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
