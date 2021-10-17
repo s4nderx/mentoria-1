@@ -1,7 +1,11 @@
 package com.dextra.mentoria.products.dto.request;
 
 import com.dextra.mentoria.products.dto.response.CategoryResponse;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,8 +13,14 @@ import java.util.Set;
 
 public class ProductRequest {
 
+    @NotEmpty(message = "Field name is required")
+    @Length(min = 3, max = 80, message = "The size must be between 3 and 80 characters")
     private String name;
+
+    @DecimalMin(value = "0.2", message = "the price must be higher or equal to 0.2")
+    @Digits(integer=3, fraction=2)
     private BigDecimal price;
+
     private Set<CategoryResponse> categories = new HashSet<CategoryResponse>();
 
     @Deprecated

@@ -4,11 +4,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ValidationError extends StandardError {
+    @Serial
     private static final long serialVersionUID = 5845325026677519769L;
 
     public ValidationError(Exception exception, HttpServletRequest request) {

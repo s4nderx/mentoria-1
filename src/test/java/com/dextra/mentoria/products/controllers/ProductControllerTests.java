@@ -47,8 +47,6 @@ public class ProductControllerTests {
     private ModelMapper modelMapper;
 
     private ProductRequest productRequest;
-    private ProductResponse productResponse;
-    private Product product;
 
     private PageImpl<ProductResponse> page;
     private Long existingId;
@@ -59,17 +57,17 @@ public class ProductControllerTests {
         this.existingId = 1L;
         this.nonExistingId = 2L;
         this.productRequest = Factory.createProductRequest();
-        this.productResponse = Factory.createProductResponse();
-        this.product = Factory.createProduct();
-        this.page = new PageImpl<>(List.of(this.productResponse));
+        ProductResponse productResponse = Factory.createProductResponse();
+        Product product = Factory.createProduct();
+        this.page = new PageImpl<>(List.of(productResponse));
         when(service.findAllPaged(any())).thenReturn(page);
-        when(service.findById(this.existingId)).thenReturn(this.product);
+        when(service.findById(this.existingId)).thenReturn(product);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);
 
         doNothing().when(service).update(eq(this.existingId), any());
         doThrow(NotFoundException.class).when(service).update(eq(this.nonExistingId), any());
 
-        when(service.create(any())).thenReturn(this.product);
+        when(service.create(any())).thenReturn(product);
 
         doNothing().when(service).delete(this.existingId);
         doThrow(NotFoundException.class).when(service).delete(this.nonExistingId);

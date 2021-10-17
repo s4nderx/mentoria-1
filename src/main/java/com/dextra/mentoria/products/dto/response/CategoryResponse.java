@@ -9,9 +9,6 @@ import java.util.Objects;
 public class CategoryResponse {
 
     private Long id;
-
-    @NotEmpty(message = "Preenchimento obrigatório")
-    @Length(min = 3, max = 80, message = "O tamanho deve ser entre 3 e 80 caracteres")
     private String name;
 
     @Deprecated

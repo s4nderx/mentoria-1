@@ -1,6 +1,7 @@
 package com.dextra.mentoria.products.entities;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
+    @Serial
     private static final long serialVersionUID = -2646686592411131571L;
 
     @Id

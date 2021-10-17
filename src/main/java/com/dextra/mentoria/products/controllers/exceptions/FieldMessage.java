@@ -1,8 +1,10 @@
 package com.dextra.mentoria.products.controllers.exceptions;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class FieldMessage implements Serializable {
+    @Serial
     private static final long serialVersionUID = -4058348359568293873L;
 
     private String fieldName;

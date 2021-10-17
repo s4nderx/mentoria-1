@@ -127,7 +127,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void updateSouldReturnCategoryDtoWhenIdExists() throws Exception {
+    public void updateShouldReturnCategoryDtoWhenIdExists() throws Exception {
 
         String body = objectMapper.writeValueAsString(Factory.createProductRequest());
 
@@ -142,7 +142,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void updateSouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+    public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         String body = objectMapper.writeValueAsString(Factory.createProductRequest());
 
         ResultActions result = this.mockMvc.perform(

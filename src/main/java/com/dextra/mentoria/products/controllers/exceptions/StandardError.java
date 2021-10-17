@@ -1,10 +1,12 @@
 package com.dextra.mentoria.products.controllers.exceptions;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
 public class StandardError implements Serializable {
+    @Serial
     private static final long serialVersionUID = -4194486122289054213L;
 
     private Instant timestamp;

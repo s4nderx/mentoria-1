@@ -1,6 +1,7 @@
 package com.dextra.mentoria.products.entities;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
+    @Serial
     private static final long serialVersionUID = -2901349284703177665L;
 
     @Id
@@ -23,7 +25,7 @@ public class Category implements Serializable {
     private Instant updatedAt;
 
     @ManyToMany(mappedBy = "categories")
-    private Set<Product> products = new HashSet<>();
+    private final Set<Product> products = new HashSet<>();
 
     public Category() {
     }

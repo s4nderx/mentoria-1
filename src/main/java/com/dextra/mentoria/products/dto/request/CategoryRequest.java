@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class CategoryRequest {
 
-    @NotEmpty(message = "Preenchimento obrigatório")
-    @Length(min = 3, max = 80, message = "O tamanho deve ser entre 3 e 80 caracteres")
+    @NotEmpty(message = "Field name is required")
+    @Length(min = 3, max = 80, message = "The size must be between 3 and 80 characters")
     private String name;
 
     @Deprecated
