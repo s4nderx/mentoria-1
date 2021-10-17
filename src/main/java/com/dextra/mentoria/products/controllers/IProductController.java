@@ -4,6 +4,9 @@ import com.dextra.mentoria.products.controllers.exceptions.StandardError;
 import com.dextra.mentoria.products.dto.request.ProductRequest;
 import com.dextra.mentoria.products.dto.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Product;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -113,4 +116,6 @@ public interface IProductController {
     )
     Product findById(@PathVariable Long id);
 
+    @PatchMapping("/{id}")
+    Product patchUpdate(@PathVariable Long id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException;
 }

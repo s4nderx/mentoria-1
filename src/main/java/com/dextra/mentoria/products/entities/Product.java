@@ -1,5 +1,8 @@
 package com.dextra.mentoria.products.entities;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -32,6 +35,7 @@ public class Product implements Serializable {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @Fetch(FetchMode.JOIN)
     private Set<Category> categories = new HashSet<>();
 
     public Product(Long id, String name, BigDecimal price) {

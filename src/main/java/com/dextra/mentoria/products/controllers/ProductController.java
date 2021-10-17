@@ -4,6 +4,9 @@ import com.dextra.mentoria.products.dto.request.ProductRequest;
 import com.dextra.mentoria.products.dto.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.services.IProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +54,11 @@ public class ProductController implements IProductController {
     @Override
     public Product findById(@PathVariable Long id){
         return this.service.findById(id);
+    }
+
+    @Override
+    public Product patchUpdate(@PathVariable Long id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        return this.service.patchUpdate(id, patch);
     }
 
 }

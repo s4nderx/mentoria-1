@@ -7,6 +7,15 @@ import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.repositories.ProductRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,31 +24,45 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class ProductService implements IProductService {
 
     private final ProductRepository repository;
 
-    private final ICategoryService ICategoryService;
+    private final ICategoryService categoryService;
 
     private final ModelMapper modelMapper;
 
-    public ProductService(ProductRepository repository, ICategoryService ICategoryService, ModelMapper modelMapper) {
+    private final ObjectMapper objectMapper;
+
+    public ProductService(ProductRepository repository, ICategoryService categoryService, ModelMapper modelMapper, ObjectMapper objectMapper) {
         this.repository = repository;
-        this.ICategoryService = ICategoryService;
+        this.categoryService = categoryService;
         this.modelMapper = modelMapper;
+
+        this.objectMapper = objectMapper;
+        this.objectMapper.registerModule(new JavaTimeModule());
+        this.objectMapper.setDateFormat(DateFormat.getDateInstance(DateFormat.LONG));
     }
 
     @Override
+    @Transactional()
     public Product create(ProductRequest request) {
         Product product = modelMapper.map(request, Product.class);
+        Set<Long> categoriesIds = product.getCategories().stream().map(Category::getId).collect(Collectors.toSet());
+        product.getCategories().clear();
+        product.getCategories().addAll(this.categoryService.findAllById(categoriesIds));
         return repository.save(product);
     }
 
     @Override
     @Transactional
     public void update(Long id, ProductRequest dto) {
-        Product product = this.find(id);
+        Product product = this.findById(id);
         this.copyDTOToEntity(dto, product);
         repository.save(product);
     }
@@ -57,19 +80,33 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public Product findById(Long id) {
-        return  this.find(id);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Page<ProductResponse> findAllPaged(Pageable pageable) {
         return this.repository.findAll(pageable).map(product -> modelMapper.map(product, ProductResponse.class));
     }
 
     @Override
-    public Product find(Long id) {
+    @Transactional(readOnly = true)
+    public Product findById(Long id) {
         return this.repository.findById(id).orElseThrow(() -> new NotFoundException("Entity not found."));
+    }
+
+    @Override
+    public Product patchUpdate(Long id, JsonPatch patch) {
+        try {
+            Product product = this.findById(id);
+
+            this.objectMapper
+                    .disable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+                    .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)
+                    .setNodeFactory(JsonNodeFactory.withExactBigDecimals(true));
+
+            JsonNode jsonNode = objectMapper.convertValue(product, JsonNode.class);
+            JsonNode patchJsonNode = patch.apply(jsonNode);
+            Product productPersist = objectMapper.treeToValue(patchJsonNode, Product.class);
+            return this.repository.save(productPersist);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            throw new NotFoundException("Id not found " + id);
+        }
     }
 
     private void copyDTOToEntity(ProductRequest dto, Product entity) {
@@ -77,7 +114,7 @@ public class ProductService implements IProductService {
         entity.setPrice(dto.getPrice());
         entity.getCategories().clear();
         dto.getCategories().forEach(categoryDTO -> {
-            Category categoryEntity = this.ICategoryService.find(categoryDTO.getId());
+            Category categoryEntity = this.categoryService.find(categoryDTO.getId());
             entity.addCategory(categoryEntity);
         });
     }

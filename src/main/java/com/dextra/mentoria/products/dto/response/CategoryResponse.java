@@ -1,9 +1,7 @@
 package com.dextra.mentoria.products.dto.response;
 
 import com.dextra.mentoria.products.entities.Category;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 public class CategoryResponse {

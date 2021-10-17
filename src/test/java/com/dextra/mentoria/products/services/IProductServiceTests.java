@@ -22,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,20 +96,6 @@ public class IProductServiceTests {
         assertThrows(DataIntegrityException.class, () -> this.service.delete(this.dependentId));
 
         verify(repository, times(1)).deleteById(this.dependentId);
-    }
-
-    @Test
-    public void findShouldReturnAnProductWhenIdExist() {
-        Product product = this.service.find(this.existingId);
-        assertNotNull(product);
-        assertEquals(product, this.product);
-        verify(repository, times(1)).findById(this.existingId);
-    }
-
-    @Test
-    public void findShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
-        assertThrows(NotFoundException.class, () -> this.service.find(this.nonExistingId));
-        verify(repository, times(1)).findById(this.nonExistingId);
     }
 
     @Test

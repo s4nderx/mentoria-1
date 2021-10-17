@@ -1,5 +1,7 @@
 package com.dextra.mentoria.products.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -25,6 +27,7 @@ public class Category implements Serializable {
     private Instant updatedAt;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private final Set<Product> products = new HashSet<>();
 
     public Category() {

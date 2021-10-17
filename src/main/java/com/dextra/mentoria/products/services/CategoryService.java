@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class CategoryService implements ICategoryService {
 
@@ -67,6 +70,11 @@ public class CategoryService implements ICategoryService {
     @Override
     public Category find(Long id) {
         return this.repository.findById(id).orElseThrow(() -> new NotFoundException("Entity not found."));
+    }
+
+    @Override
+    public List<Category> findAllById(Set<Long> ids) {
+        return this.repository.findAllById(ids);
     }
 
 }

@@ -10,7 +10,8 @@ public class ProductResponse {
     private Long id;
     private String name;
     private BigDecimal price;
-    private Set<CategoryResponse> categories = new HashSet<CategoryResponse>();
+
+    private Set<CategoryResponse> categories = new HashSet<>();
 
     @Deprecated
     public ProductResponse() {

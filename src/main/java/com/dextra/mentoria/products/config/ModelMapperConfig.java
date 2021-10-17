@@ -13,6 +13,9 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.getConfiguration().isCollectionsMergeEnabled();
+
         modelMapper.createTypeMap(Product.class, ProductResponse.class)
                 .addMapping(Product::getCategories, ProductResponse::setCategories);
 
