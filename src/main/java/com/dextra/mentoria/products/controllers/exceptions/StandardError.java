@@ -1,5 +1,6 @@
 package com.dextra.mentoria.products.controllers.exceptions;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -12,46 +13,58 @@ public class StandardError implements Serializable {
     private String message;
     private String path;
 
+    @Deprecated
     public StandardError() {
+    }
+
+    public StandardError(Exception exception, HttpServletRequest request) {
+        this.timestamp = Instant.now();
+        this.message = exception.getMessage();
+        this.path = request.getRequestURI();
     }
 
     public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public StandardError setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
+        return this;
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public StandardError setStatus(Integer status) {
         this.status = status;
+        return this;
     }
 
     public String getError() {
         return error;
     }
 
-    public void setError(String error) {
+    public StandardError setError(String error) {
         this.error = error;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public StandardError setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
+    public StandardError setPath(String path) {
         this.path = path;
+        return this;
     }
 }
