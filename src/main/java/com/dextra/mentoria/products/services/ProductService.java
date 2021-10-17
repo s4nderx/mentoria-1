@@ -18,12 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductService implements IProductService {
 
-    final ProductRepository repository;
+    private final ProductRepository repository;
 
-    final ICategoryService ICategoryService;
+    private final ICategoryService ICategoryService;
 
-    final
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public ProductService(ProductRepository repository, ICategoryService ICategoryService, ModelMapper modelMapper) {
         this.repository = repository;

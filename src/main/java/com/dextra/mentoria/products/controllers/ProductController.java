@@ -6,18 +6,18 @@ import com.dextra.mentoria.products.services.IProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
-
 @RestController
 @RequestMapping(value = "/products")
-public class ProductController {
+public class ProductController implements IProductController {
 
     private final IProductService service;
 
@@ -25,33 +25,29 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping
+    @Override
     public ResponseEntity<ProductResponse> insert(@Valid @RequestBody ProductRequest request){
         ProductResponse response = this.service.create(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.getId()).toUri();
         return  ResponseEntity.created(uri).body(response);
     }
 
-    @PutMapping(value = "/{id}")
-    @ResponseStatus(NO_CONTENT)
+    @Override
     public void update(@Valid @RequestBody ProductRequest request, @PathVariable Long id){
         this.service.update(id, request);
     }
 
-    @DeleteMapping(value = "/{id}")
-    @ResponseStatus(NO_CONTENT)
+    @Override
     public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
 
-    @GetMapping()
-    @ResponseStatus(OK)
+    @Override
     public Page<ProductResponse> findAll(Pageable pageable){
         return this.service.findAllPaged(pageable);
     }
 
-    @GetMapping(value = "/{id}")
-    @ResponseStatus(OK)
+    @Override
     public ProductResponse findById(@PathVariable Long id){
         return this.service.findById(id);
     }

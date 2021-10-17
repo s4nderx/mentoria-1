@@ -3,6 +3,7 @@ package com.dextra.mentoria.products.controllers.exceptions;
 
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,6 +16,7 @@ import static org.springframework.http.HttpStatus.*;
 @RestControllerAdvice
 public class ExceptionHandlerController {
 
+    @Hidden
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(NOT_FOUND)
     public StandardError entityNotFound(NotFoundException exception, HttpServletRequest request){
