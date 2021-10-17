@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 
 public interface IProductService {
 
-    ProductResponse create(ProductRequest request);
+    Product create(ProductRequest request);
     void update(Long id, ProductRequest request);
     void delete(Long id);
-    ProductResponse findById(Long id);
+    Product findById(Long id);
     Page<ProductResponse> findAllPaged(Pageable pageable);
     Product find(Long id);
 }

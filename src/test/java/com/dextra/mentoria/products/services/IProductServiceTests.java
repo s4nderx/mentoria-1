@@ -115,7 +115,7 @@ public class IProductServiceTests {
 
     @Test
     public void findByIdShouldReturnAnProductResponseWhenIdExist() {
-        ProductResponse dto = this.service.findById(this.existingId);
+        Product dto = this.service.findById(this.existingId);
         assertNotNull(dto);
         verify(repository, times(1)).findById(this.existingId);
     }
@@ -129,7 +129,7 @@ public class IProductServiceTests {
     @Test
     public void createShouldReturnAnNewProductResponseWithIdWhenIdIsNull() {
         ProductRequest request = Factory.createProductRequest();
-        ProductResponse response = this.service.create(request);
+        Product response = this.service.create(request);
         assertNotNull(response.getId());
         verify(this.repository, times(1)).save(any());
     }

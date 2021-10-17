@@ -1,14 +1,19 @@
 package com.dextra.mentoria.products.controllers;
 
+import com.dextra.mentoria.products.controllers.serialization.ProductSerialization;
 import com.dextra.mentoria.products.dto.request.ProductRequest;
 import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.services.ProductService;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
 import com.dextra.mentoria.products.tests.Factory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -37,31 +43,40 @@ public class ProductControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private ModelMapper modelMapper;
+
     private ProductRequest productRequest;
     private ProductResponse productResponse;
+    private Product product;
 
     private PageImpl<ProductResponse> page;
     private Long existingId;
     private Long nonExistingId;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         this.existingId = 1L;
         this.nonExistingId = 2L;
         this.productRequest = Factory.createProductRequest();
         this.productResponse = Factory.createProductResponse();
+        this.product = Factory.createProduct();
         this.page = new PageImpl<>(List.of(this.productResponse));
         when(service.findAllPaged(any())).thenReturn(page);
-        when(service.findById(this.existingId)).thenReturn(this.productResponse);
+        when(service.findById(this.existingId)).thenReturn(this.product);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);
 
         doNothing().when(service).update(eq(this.existingId), any());
         doThrow(NotFoundException.class).when(service).update(eq(this.nonExistingId), any());
 
-        when(service.create(any())).thenReturn(this.productResponse);
+        when(service.create(any())).thenReturn(this.product);
 
         doNothing().when(service).delete(this.existingId);
         doThrow(NotFoundException.class).when(service).delete(this.nonExistingId);
+
+        when(modelMapper.map(any(), eq(Product.class))).thenReturn(Factory.createProduct());
+        when(modelMapper.map(any(), eq(ProductResponse.class))).thenReturn(Factory.createProductResponse());
+
     }
 
     @Test

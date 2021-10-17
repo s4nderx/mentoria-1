@@ -2,6 +2,7 @@ package com.dextra.mentoria.products.controllers;
 
 import com.dextra.mentoria.products.dto.request.ProductRequest;
 import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.services.IProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +27,8 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public ResponseEntity<ProductResponse> insert(@Valid @RequestBody ProductRequest request){
-        ProductResponse response = this.service.create(request);
+    public ResponseEntity<Product> insert(@Valid @RequestBody ProductRequest request){
+        Product response = this.service.create(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.getId()).toUri();
         return  ResponseEntity.created(uri).body(response);
     }
@@ -48,7 +49,7 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public ProductResponse findById(@PathVariable Long id){
+    public Product findById(@PathVariable Long id){
         return this.service.findById(id);
     }
 

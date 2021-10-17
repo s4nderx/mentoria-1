@@ -2,6 +2,7 @@ package com.dextra.mentoria.products.controllers;
 
 import com.dextra.mentoria.products.dto.request.CategoryRequest;
 import com.dextra.mentoria.products.dto.response.CategoryResponse;
+import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.services.CategoryService;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
@@ -9,6 +10,7 @@ import com.dextra.mentoria.products.tests.Factory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,10 +40,9 @@ public class CategoryControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private CategoryRequest categoryRequest;
-    private CategoryResponse categoryResponse;
+    @MockBean
+    private ModelMapper modelMapper;
 
-    private PageImpl<CategoryResponse> page;
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
@@ -51,15 +52,14 @@ public class CategoryControllerTests {
         this.existingId = 1L;
         this.nonExistingId = 2L;
         this.dependentId  = 3L;
-        this.categoryRequest = Factory.createCategoryRequest();
-        this.categoryResponse = Factory.createCategoryResponse();
+        CategoryResponse categoryResponse = Factory.createCategoryResponse();
 
-        this.page = new PageImpl<>(List.of(this.categoryResponse));
+        PageImpl<CategoryResponse> page = new PageImpl<>(List.of(categoryResponse));
 
         when(service.findAllPaged(any())).thenReturn(page);
-        when(service.findById(this.existingId)).thenReturn(this.categoryResponse);
+        when(service.findById(this.existingId)).thenReturn(categoryResponse);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);
-        when(service.create(any())).thenReturn(this.categoryResponse);
+        when(service.create(any())).thenReturn(categoryResponse);
 
         doNothing().when(service).delete(this.existingId);
         doNothing().when(service).update(eq(this.existingId), any());
@@ -67,6 +67,9 @@ public class CategoryControllerTests {
         doThrow(NotFoundException.class).when(service).delete(this.nonExistingId);
         doThrow(DataIntegrityException.class).when(service).delete(this.dependentId);
         doThrow(NotFoundException.class).when(service).update(eq(this.nonExistingId), any());
+
+        when(modelMapper.map(any(), eq(Category.class))).thenReturn(Factory.createCategory());
+        when(modelMapper.map(any(), eq(CategoryResponse.class))).thenReturn(Factory.createCategoryResponse());
 
     }
 

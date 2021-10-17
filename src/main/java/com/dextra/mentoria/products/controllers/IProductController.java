@@ -3,6 +3,7 @@ package com.dextra.mentoria.products.controllers;
 import com.dextra.mentoria.products.controllers.exceptions.StandardError;
 import com.dextra.mentoria.products.dto.request.ProductRequest;
 import com.dextra.mentoria.products.dto.response.ProductResponse;
+import com.dextra.mentoria.products.entities.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -22,7 +23,7 @@ public interface IProductController {
 
     @PostMapping
     @Operation(summary = "Insert a new Product")
-    ResponseEntity<ProductResponse> insert(@Valid @RequestBody ProductRequest request);
+    ResponseEntity<Product> insert(@Valid @RequestBody ProductRequest request);
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(NO_CONTENT)
@@ -110,6 +111,6 @@ public interface IProductController {
                     )
             }
     )
-    ProductResponse findById(@PathVariable Long id);
+    Product findById(@PathVariable Long id);
 
 }

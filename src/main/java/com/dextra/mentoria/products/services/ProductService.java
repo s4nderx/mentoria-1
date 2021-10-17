@@ -31,9 +31,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductResponse create(ProductRequest request) {
+    public Product create(ProductRequest request) {
         Product product = modelMapper.map(request, Product.class);
-        return modelMapper.map(repository.save(product), ProductResponse.class);
+        return repository.save(product);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public ProductResponse findById(Long id) {
-        return  modelMapper.map(this.find(id), ProductResponse.class);
+    public Product findById(Long id) {
+        return  this.find(id);
     }
 
     @Override
