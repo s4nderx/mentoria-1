@@ -2,6 +2,7 @@ package com.dextra.mentoria.products.controllers;
 
 import com.dextra.mentoria.products.dtos.request.CategoryRequest;
 import com.dextra.mentoria.products.dtos.response.CategoryResponse;
+import com.dextra.mentoria.products.entities.Category;
 import com.dextra.mentoria.products.services.ICategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,21 +27,21 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> insert(@Valid @RequestBody CategoryRequest request){
-        CategoryResponse categoryResponse = this.service.create(request);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoryResponse.getId()).toUri();
-        return  ResponseEntity.created(uri).body(categoryResponse);
+    public ResponseEntity<Category> insert(@Valid @RequestBody CategoryRequest request){
+        Category category = this.service.create(request);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
+        return  ResponseEntity.created(uri).body(category);
     }
 
     @GetMapping
     @ResponseStatus(OK)
-    public Page<CategoryResponse> findAll(Pageable pageable){
+    public Page<Category> findAll(Pageable pageable){
         return this.service.findAllPaged(pageable);
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(OK)
-    public CategoryResponse findById(@PathVariable Long id){
+    public Category findById(@PathVariable Long id){
         return this.service.findById(id);
     }
 

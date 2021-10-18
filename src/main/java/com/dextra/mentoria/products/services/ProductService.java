@@ -118,7 +118,7 @@ public class ProductService implements IProductService {
         entity.setPrice(dto.getPrice());
         entity.getCategories().clear();
         dto.getCategories().forEach(categoryDTO -> {
-            Category categoryEntity = this.categoryService.find(categoryDTO.getId());
+            Category categoryEntity = this.categoryService.findById(categoryDTO.getId());
             entity.addCategory(categoryEntity);
         });
     }

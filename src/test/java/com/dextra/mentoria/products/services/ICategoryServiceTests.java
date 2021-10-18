@@ -42,19 +42,18 @@ public class ICategoryServiceTests {
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
-    private Category category;
 
     @BeforeEach
     void setUp() {
         this.existingId = 1L;
         this.nonExistingId = Long.MAX_VALUE;
         this.dependentId = 5L;
-        this.category = Factory.createCategory();
-        PageImpl<Category> page = new PageImpl<>(List.of(this.category));
+        Category category = Factory.createCategory();
+        PageImpl<Category> page = new PageImpl<>(List.of(category));
 
         when(repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
-        when(repository.save(any())).thenReturn(this.category);
-        when(repository.findById(this.existingId)).thenReturn(Optional.of(this.category));
+        when(repository.save(any())).thenReturn(category);
+        when(repository.findById(this.existingId)).thenReturn(Optional.of(category));
         when(repository.findById(this.nonExistingId)).thenReturn(Optional.empty());
         doNothing().when(repository).deleteById(this.existingId);
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(this.nonExistingId);
@@ -68,7 +67,7 @@ public class ICategoryServiceTests {
     @Test
     public void findAllPagedShouldReturnPage(){
         Pageable pageable = PageRequest.of(0, 10);
-        Page<CategoryResponse> res = service.findAllPaged(pageable);
+        Page<Category> res = service.findAllPaged(pageable);
         assertNotNull(res);
         verify(repository, times(1)).findAll(pageable);
     }
@@ -96,23 +95,9 @@ public class ICategoryServiceTests {
     }
 
     @Test
-    public void findShouldReturnAnCategoryWhenIdExist() {
-        Category category = this.service.find(this.existingId);
-        assertNotNull(category);
-        assertEquals(category, this.category);
-        verify(repository, times(1)).findById(this.existingId);
-    }
-
-    @Test
-    public void findShouldThrowNotFoundExceptionWhenIdDoesNotExist() {
-        assertThrows(NotFoundException.class, () -> this.service.find(this.nonExistingId));
-        verify(repository, times(1)).findById(this.nonExistingId);
-    }
-
-    @Test
     public void findByIdShouldReturnAnCategoryDtoWhenIdExist() {
-        CategoryResponse dto = this.service.findById(this.existingId);
-        assertNotNull(dto);
+        Category category = this.service.findById(this.existingId);
+        assertNotNull(category);
         verify(repository, times(1)).findById(this.existingId);
     }
 
@@ -123,9 +108,9 @@ public class ICategoryServiceTests {
     }
 
     @Test
-    public void createShouldReturnAnNewCategoryDtoWithIdWhenIdIsNull() {
-        CategoryResponse categoryResponse = this.service.create(Factory.createCategoryRequest());
-        assertNotNull(categoryResponse.getId());
+    public void createShouldReturnAnNewCategoryWithIdWhenIdIsNull() {
+        Category category = this.service.create(Factory.createCategoryRequest());
+        assertNotNull(category.getId());
         verify(this.repository, times(1)).save(any());
     }
 

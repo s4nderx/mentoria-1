@@ -20,26 +20,20 @@ import java.util.Set;
 @Service
 public class CategoryService implements ICategoryService {
 
-    private static final Class<CategoryResponse> responseClass = CategoryResponse.class;
-
     private final CategoryRepository repository;
 
-    private final ModelMapper modelMapper;
-
-    public CategoryService(CategoryRepository repository, ModelMapper modelMapper) {
+    public CategoryService(CategoryRepository repository) {
         this.repository = repository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
-    public CategoryResponse create(CategoryRequest request) {
-        Category category = this.repository.save(new Category(null, request.getName()));
-        return modelMapper.map(category, responseClass);
+    public Category create(CategoryRequest request) {
+        return this.repository.save(new Category(null, request.getName()));
     }
 
     @Override
     public void update(Long id, CategoryRequest request) {
-        Category category = this.find(id);
+        Category category = this.findById(id);
         category.setName(request.getName());
         this.repository.save(category);
     }
@@ -56,19 +50,13 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryResponse findById(Long id) {
-        Category category = this.find(id);
-        return modelMapper.map(category, responseClass);
-    }
-
-    @Override
     @Transactional(readOnly = true)
-    public Page<CategoryResponse> findAllPaged(Pageable pageable) {
-        return repository.findAll(pageable).map(category -> modelMapper.map(category, responseClass));
+    public Page<Category> findAllPaged(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
-    public Category find(Long id) {
+    public Category findById(Long id) {
         return this.repository.findById(id).orElseThrow(() -> new NotFoundException("Entity not found."));
     }
 

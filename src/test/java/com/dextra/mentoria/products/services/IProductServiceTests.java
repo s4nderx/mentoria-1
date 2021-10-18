@@ -63,7 +63,7 @@ public class IProductServiceTests {
         doNothing().when(repository).deleteById(this.existingId);
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(this.nonExistingId);
         doThrow(DataIntegrityViolationException.class).when(repository).deleteById(this.dependentId);
-        when(ICategoryService.find(this.existingId)).thenReturn(Factory.createCategory());
+        when(ICategoryService.findById(this.existingId)).thenReturn(Factory.createCategory());
         when(modelMapper.map(any(), eq(Product.class))).thenReturn(Factory.createProduct());
         when(modelMapper.map(any(), eq(ProductResponse.class))).thenReturn(Factory.createProductResponse());
     }

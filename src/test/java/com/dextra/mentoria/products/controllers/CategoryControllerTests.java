@@ -52,13 +52,14 @@ public class CategoryControllerTests {
         this.nonExistingId = 2L;
         this.dependentId  = 3L;
         CategoryResponse categoryResponse = Factory.createCategoryResponse();
+        Category category = Factory.createCategory();
 
-        PageImpl<CategoryResponse> page = new PageImpl<>(List.of(categoryResponse));
+        PageImpl<Category> page = new PageImpl<>(List.of(category));
 
         when(service.findAllPaged(any())).thenReturn(page);
-        when(service.findById(this.existingId)).thenReturn(categoryResponse);
+        when(service.findById(this.existingId)).thenReturn(category);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);
-        when(service.create(any())).thenReturn(categoryResponse);
+        when(service.create(any())).thenReturn(category);
 
         doNothing().when(service).delete(this.existingId);
         doNothing().when(service).update(eq(this.existingId), any());
