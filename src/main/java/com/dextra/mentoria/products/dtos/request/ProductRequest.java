@@ -18,7 +18,7 @@ public class ProductRequest {
     private String name;
 
     @DecimalMin(value = "0.2", message = "the price must be higher or equal to 0.2")
-    @Digits(integer=3, fraction=2)
+    @Digits(integer = 6, fraction = 2)
     private BigDecimal price;
 
     private Set<CategoryResponse> categories = new HashSet<CategoryResponse>();

@@ -7,6 +7,8 @@ import com.dextra.mentoria.products.repositories.ProductRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
 import com.dextra.mentoria.products.tests.Factory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.text.DateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,22 +46,24 @@ public class IProductServiceTests {
     @Mock
     private ModelMapper modelMapper;
 
+    @Mock
+    private ObjectMapper objectMapper;
+
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
-    private Product product;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         this.existingId = 1L;
         this.nonExistingId = Long.MAX_VALUE;
         this.dependentId = 5L;
-        this.product = Factory.createProduct();
-        PageImpl<Product> page = new PageImpl<>(List.of(this.product));
+        Product product = Factory.createProduct();
+        PageImpl<Product> page = new PageImpl<>(List.of(product));
 
         when(repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
-        when(repository.save(any())).thenReturn(this.product);
-        when(repository.findById(this.existingId)).thenReturn(Optional.of(this.product));
+        when(repository.save(any())).thenReturn(product);
+        when(repository.findById(this.existingId)).thenReturn(Optional.of(product));
         when(repository.findById(this.nonExistingId)).thenReturn(Optional.empty());
         doNothing().when(repository).deleteById(this.existingId);
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(this.nonExistingId);
@@ -66,6 +71,10 @@ public class IProductServiceTests {
         when(ICategoryService.findById(this.existingId)).thenReturn(Factory.createCategory());
         when(modelMapper.map(any(), eq(Product.class))).thenReturn(Factory.createProduct());
         when(modelMapper.map(any(), eq(ProductResponse.class))).thenReturn(Factory.createProductResponse());
+
+        when(this.objectMapper.registerModule(any())).thenReturn(this.objectMapper);
+        when(this.objectMapper.setDateFormat(any())).thenReturn(this.objectMapper);
+
     }
 
     @Test
