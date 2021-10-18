@@ -6,6 +6,7 @@ import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.repositories.ProductRepository;
 import com.dextra.mentoria.products.services.exceptions.DataIntegrityException;
 import com.dextra.mentoria.products.services.exceptions.NotFoundException;
+import com.dextra.mentoria.products.services.exceptions.PatchException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -105,12 +106,8 @@ public class ProductService implements IProductService {
             return this.repository.save(productPersist);
             //TODO: handle this exceptions correctly
             //TODO: HttpMessageNotReadableException
-        } catch (JsonPatchException e) {
-            System.out.println(e.toString());
-            throw new NotFoundException(e.getMessage());
-        } catch (JsonProcessingException e){
-            System.out.println(e.toString());
-            throw new NotFoundException("Id not found " + id);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            throw new PatchException(e.getMessage());
         }
     }
 
