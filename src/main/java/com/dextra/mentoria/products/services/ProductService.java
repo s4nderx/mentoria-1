@@ -104,8 +104,6 @@ public class ProductService implements IProductService {
             JsonNode patchJsonNode = patch.apply(jsonNode);
             Product productPersist = objectMapper.treeToValue(patchJsonNode, Product.class);
             return this.repository.save(productPersist);
-            //TODO: handle this exceptions correctly
-            //TODO: HttpMessageNotReadableException
         } catch (JsonPatchException | JsonProcessingException e) {
             throw new PatchException(e.getMessage());
         }
