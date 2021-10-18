@@ -1,7 +1,6 @@
 package com.dextra.mentoria.products.controllers;
 
 import com.dextra.mentoria.products.dtos.request.ProductRequest;
-import com.dextra.mentoria.products.dtos.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Product;
 import com.dextra.mentoria.products.services.IProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,7 +46,7 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public Page<ProductResponse> findAll(Pageable pageable){
+    public Page<Product> findAll(Pageable pageable){
         return this.service.findAllPaged(pageable);
     }
 

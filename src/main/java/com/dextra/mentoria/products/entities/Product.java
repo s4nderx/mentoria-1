@@ -51,53 +51,60 @@ public class Product implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public Product setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Product setName(String name) {
         this.name = name;
+        return this;
     }
 
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public Product setPrice(BigDecimal price) {
         this.price = price;
+        return this;
     }
 
     public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public Product setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public Product setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+        return this;
     }
 
     public Set<Category> getCategories() {
         return categories;
     }
 
-    public void addCategory(Category category) {
+    public Product addCategory(Category category) {
         this.categories.add(category);
+        return this;
     }
 
     @Deprecated
-    public void setCategories(Set<Category> categories) {
+    public Product setCategories(Set<Category> categories) {
         this.categories = categories;
+        return this;
     }
 
     @PrePersist

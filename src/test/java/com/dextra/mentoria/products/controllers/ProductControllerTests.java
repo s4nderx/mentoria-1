@@ -45,7 +45,7 @@ public class ProductControllerTests {
 
     private ProductRequest productRequest;
 
-    private PageImpl<ProductResponse> page;
+    private PageImpl<Product> page;
     private Long existingId;
     private Long nonExistingId;
 
@@ -56,7 +56,7 @@ public class ProductControllerTests {
         this.productRequest = Factory.createProductRequest();
         ProductResponse productResponse = Factory.createProductResponse();
         Product product = Factory.createProduct();
-        this.page = new PageImpl<>(List.of(productResponse));
+        this.page = new PageImpl<>(List.of(product));
         when(service.findAllPaged(any())).thenReturn(page);
         when(service.findById(this.existingId)).thenReturn(product);
         when(service.findById(this.nonExistingId)).thenThrow(NotFoundException.class);

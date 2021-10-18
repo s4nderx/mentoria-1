@@ -34,16 +34,18 @@ public class Category implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public Category setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Category setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Instant getCreatedAt() {
@@ -51,8 +53,9 @@ public class Category implements Serializable {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public Category setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     public Instant getUpdatedAt() {

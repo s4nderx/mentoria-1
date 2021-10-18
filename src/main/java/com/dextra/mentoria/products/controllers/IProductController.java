@@ -2,7 +2,6 @@ package com.dextra.mentoria.products.controllers;
 
 import com.dextra.mentoria.products.controllers.exceptions.StandardError;
 import com.dextra.mentoria.products.dtos.request.ProductRequest;
-import com.dextra.mentoria.products.dtos.response.ProductResponse;
 import com.dextra.mentoria.products.entities.Product;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -85,7 +84,7 @@ public interface IProductController {
     @GetMapping()
     @ResponseStatus(OK)
     @Operation(summary = "Retrieve a page of products")
-    Page<ProductResponse> findAll(Pageable pageable);
+    Page<Product> findAll(Pageable pageable);
 
 
     @GetMapping(value = "/{id}")

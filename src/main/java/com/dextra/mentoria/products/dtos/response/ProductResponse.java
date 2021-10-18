@@ -27,28 +27,32 @@ public class ProductResponse {
         return id;
     }
 
-    public void setId(Long id) {
+    public ProductResponse setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public ProductResponse setName(String name) {
         this.name = name;
+        return this;
     }
 
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public ProductResponse setPrice(BigDecimal price) {
         this.price = price;
+        return this;
     }
 
-    public void addCategory(CategoryResponse category) {
+    public ProductResponse addCategory(CategoryResponse category) {
         this.categories.add(category);
+        return this;
     }
 
     public Set<CategoryResponse> getCategories() {
@@ -56,8 +60,9 @@ public class ProductResponse {
     }
 
     @Deprecated
-    public void setCategories(Set<CategoryResponse> categories) {
+    public ProductResponse setCategories(Set<CategoryResponse> categories) {
         this.categories = categories;
+        return this;
     }
 
     @Override

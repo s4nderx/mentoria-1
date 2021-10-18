@@ -80,7 +80,7 @@ public class IProductServiceTests {
     @Test
     public void findAllPagedShouldReturnPage(){
         Pageable pageable = PageRequest.of(0, 10);
-        Page<ProductResponse> res = service.findAllPaged(pageable);
+        Page<Product> res = service.findAllPaged(pageable);
         assertNotNull(res);
         verify(repository, times(1)).findAll(pageable);
     }

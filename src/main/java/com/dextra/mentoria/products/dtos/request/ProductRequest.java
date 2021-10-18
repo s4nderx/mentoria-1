@@ -36,20 +36,23 @@ public class ProductRequest {
         return name;
     }
 
-    public void setName(String name) {
+    public ProductRequest setName(String name) {
         this.name = name;
+        return this;
     }
 
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public ProductRequest setPrice(BigDecimal price) {
         this.price = price;
+        return this;
     }
 
-    public void addCategory(CategoryResponse category) {
+    public ProductRequest addCategory(CategoryResponse category) {
         this.categories.add(category);
+        return this;
     }
 
     public Set<CategoryResponse> getCategories() {
