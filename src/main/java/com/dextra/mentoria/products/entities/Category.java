@@ -1,13 +1,9 @@
 package com.dextra.mentoria.products.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
@@ -25,10 +21,6 @@ public class Category implements Serializable {
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
-
-    @ManyToMany(mappedBy = "categories")
-    @JsonIgnore
-    private final Set<Product> products = new HashSet<>();
 
     public Category() {
     }
@@ -69,14 +61,6 @@ public class Category implements Serializable {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void addProduct(Product product) {
-        this.products.add(product);
     }
 
     @PrePersist
