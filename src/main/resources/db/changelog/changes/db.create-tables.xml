@@ -1,0 +1,92 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="phellipe-sander" id="1">
+
+        <preConditions>
+            <not>
+                <tableExists tableName="TB_CATEGORY" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="TB_CATEGORY">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+
+        <preConditions>
+            <not>
+                <tableExists tableName="TB_PRODUCT" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="TB_PRODUCT">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+
+        <preConditions>
+            <not>
+                <tableExists tableName="TB_PRODUCT_CATEGORY" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="TB_PRODUCT_CATEGORY">
+            <column name="PRODUCT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CATEGORY_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint  baseColumnNames="PRODUCT_ID"
+                                  baseTableName="TB_PRODUCT_CATEGORY"
+                                  constraintName="fk_product_id"
+                                  onDelete="CASCADE"
+                                  onUpdate="RESTRICT"
+                                  referencedColumnNames="id"
+                                  referencedTableName="TB_PRODUCT"
+                                  validate="true"/>
+
+        <addForeignKeyConstraint  baseColumnNames="CATEGORY_ID"
+                                  baseTableName="TB_PRODUCT_CATEGORY"
+                                  constraintName="fk_category_id"
+                                  onDelete="CASCADE"
+                                  onUpdate="RESTRICT"
+                                  referencedColumnNames="id"
+                                  referencedTableName="TB_CATEGORY"
+                                  validate="true"/>
+
+        <createIndex tableName="TB_CATEGORY" indexName="index_category">
+            <column name="id" />
+        </createIndex>
+        <createIndex tableName="TB_PRODUCT" indexName="index_prodoct">
+            <column name="id" />
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="store_user"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

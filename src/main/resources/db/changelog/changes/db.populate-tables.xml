@@ -1,0 +1,77 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="phellipe-sander" id="1">
+
+        <insert tableName="TB_CATEGORY">
+            <column  name="NAME"  value="Jardim"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+        <insert tableName="TB_CATEGORY">
+            <column  name="NAME"  value="Casa"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+        <insert tableName="TB_CATEGORY">
+            <column  name="NAME"  value="Cozinha"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+        <insert tableName="TB_CATEGORY">
+            <column  name="NAME"  value="Eletrônicos"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+
+        <insert tableName="TB_PRODUCT">
+            <column  name="NAME"  value="Computador Gamer"/>
+            <column  name="PRICE"  value="5000.98"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+        <insert tableName="TB_PRODUCT">
+            <column  name="NAME"  value="Jogo de panelas"/>
+            <column  name="PRICE"  value="500.98"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+        <insert tableName="TB_PRODUCT">
+            <column  name="NAME"  value="Vaso de planta"/>
+            <column  name="PRICE"  value="5000.98"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+        <insert tableName="TB_PRODUCT">
+            <column  name="NAME"  value="Sofa"/>
+            <column  name="PRICE"  value="500.98"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+        <insert tableName="TB_PRODUCT">
+            <column  name="NAME"  value="Mouse Gamer"/>
+            <column  name="PRICE"  value="5000.98"/>
+            <column  name="CREATED_AT"  value="CURRENT_TIMESTAMP()"/>
+        </insert>
+
+
+        <insert tableName="TB_PRODUCT_CATEGORY">
+            <column  name="CATEGORY_ID"  value="4"/>
+            <column  name="PRODUCT_ID"  value="1"/>
+        </insert>
+        <insert tableName="TB_PRODUCT_CATEGORY">
+            <column  name="CATEGORY_ID"  value="3"/>
+            <column  name="PRODUCT_ID"  value="2"/>
+        </insert>
+        <insert tableName="TB_PRODUCT_CATEGORY">
+            <column  name="CATEGORY_ID"  value="1"/>
+            <column  name="PRODUCT_ID"  value="3"/>
+        </insert>
+        <insert tableName="TB_PRODUCT_CATEGORY">
+            <column  name="CATEGORY_ID"  value="2"/>
+            <column  name="PRODUCT_ID"  value="4"/>
+        </insert>
+        <insert tableName="TB_PRODUCT_CATEGORY">
+            <column  name="CATEGORY_ID"  value="4"/>
+            <column  name="PRODUCT_ID"  value="5"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -39,14 +39,14 @@ public interface IProductController {
                                     examples = @ExampleObject(
                                             value =
                                                     """
-                                                                    {
-                                                                        "timestamp": "2021-10-17T14:55:30.385445300Z",
-                                                                        "status": 404,
-                                                                        "error": "Resource not found",
-                                                                        "message": "Entity not found.",
-                                                                        "path": "/products/1000"
-                                                                    }
-                                                            """
+                                                        {
+                                                            "timestamp": "2021-10-17T14:55:30.385445300Z",
+                                                            "status": 404,
+                                                            "error": "Resource not found",
+                                                            "message": "Entity not found.",
+                                                            "path": "/products/1000"
+                                                        }
+                                                    """
                                     ),
                                     schema = @Schema(implementation = StandardError.class)
                             )
@@ -66,14 +66,14 @@ public interface IProductController {
                                     examples = @ExampleObject(
                                             value =
                                                     """
-                                                                    {
-                                                                        "timestamp": "2021-10-17T14:55:30.385445300Z",
-                                                                        "status": 404,
-                                                                        "error": "Resource not found",
-                                                                        "message": "Entity not found.",
-                                                                        "path": "/products/1000"
-                                                                    }
-                                                            """
+                                                        {
+                                                            "timestamp": "2021-10-17T14:55:30.385445300Z",
+                                                            "status": 404,
+                                                            "error": "Resource not found",
+                                                            "message": "Entity not found.",
+                                                            "path": "/products/1000"
+                                                        }
+                                                    """
                                     ),
                                     schema = @Schema(implementation = StandardError.class)
                             )
@@ -99,14 +99,14 @@ public interface IProductController {
                                     examples = @ExampleObject(
                                             value =
                                                     """
-                                                                    {
-                                                                        "timestamp": "2021-10-17T14:55:30.385445300Z",
-                                                                        "status": 404,
-                                                                        "error": "Resource not found",
-                                                                        "message": "Entity not found.",
-                                                                        "path": "/products/1000"
-                                                                    }
-                                                            """
+                                                        {
+                                                            "timestamp": "2021-10-17T14:55:30.385445300Z",
+                                                            "status": 404,
+                                                            "error": "Resource not found",
+                                                            "message": "Entity not found.",
+                                                            "path": "/products/1000"
+                                                        }
+                                                    """
                                     ),
                                     schema = @Schema(implementation = StandardError.class)
                             )
@@ -126,14 +126,14 @@ public interface IProductController {
                                     examples = @ExampleObject(
                                             value =
                                                     """
-                                                                    {
-                                                                        "timestamp": "2021-10-17T14:55:30.385445300Z",
-                                                                        "status": 404,
-                                                                        "error": "Resource not found",
-                                                                        "message": "Entity not found.",
-                                                                        "path": "/products/1000"
-                                                                    }
-                                                            """
+                                                        {
+                                                            "timestamp": "2021-10-17T14:55:30.385445300Z",
+                                                            "status": 404,
+                                                            "error": "Resource not found",
+                                                            "message": "Entity not found.",
+                                                            "path": "/products/1000"
+                                                        }
+                                                    """
                                     ),
                                     schema = @Schema(implementation = StandardError.class)
                             )
