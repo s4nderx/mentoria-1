@@ -3,7 +3,6 @@ package com.dextra.mentoria.products.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +17,6 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
-@Profile("test")
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
     @Override
