@@ -6,7 +6,7 @@ services:
     container_name: "products-db"
     volumes:
       - "./data/postgres:/var/lib/postgresql"
-      - "./init/data.sql:/docker-entrypoint-initdb.d/data.sql"
+#      - "./init/data.sql:/docker-entrypoint-initdb.d/data.sql"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
